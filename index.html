@@ -229,7 +229,8 @@
     @media (max-width: 768px) {
       .about-content { grid-template-columns: 1fr; }
       .about-visual { height: 200px; }
-      nav ul { display: none !important; }
+      nav ul, nav ul[data-lang="en"], nav ul[data-lang="zh"],
+      body.zh nav ul[data-lang="zh"] { display: none !important; }
       .hamburger { display: block; }
     }
   </style>
