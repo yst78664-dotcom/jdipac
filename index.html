@@ -61,9 +61,9 @@
     .logo-pacific { font-size: 0.75rem; font-weight: 300; color: var(--accent); letter-spacing: 0.25em; text-transform: uppercase; }
     .logo-cn { font-size: 1.3rem; font-weight: 700; color: var(--dark); letter-spacing: 0.05em; }
     
-    .nav-right { display: flex; align-items: center; gap: 2rem; }
-    nav ul { list-style: none; display: flex; gap: 2rem; }
-    nav a { text-decoration: none; color: var(--gray); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    nav ul { list-style: none; display: flex; gap: 1.5rem; }
+    nav a { text-decoration: none; color: var(--gray); font-size: 0.85rem; font-weight: 500; transition: color 0.2s; white-space: nowrap; }
     nav a:hover { color: var(--primary); }
 
     .lang-toggle {
@@ -197,10 +197,40 @@
       font-size: 0.85rem;
     }
 
+    /* Hamburger menu */
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block; width: 100%; height: 2px; background: var(--dark);
+      position: absolute; left: 0; transition: all 0.3s;
+    }
+    .hamburger span:nth-child(1) { top: 0; }
+    .hamburger span:nth-child(2) { top: 9px; }
+    .hamburger span:nth-child(3) { top: 18px; }
+    .hamburger.active span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 64px; left: 0; right: 0;
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(12px);
+      padding: 1.5rem 2rem; border-bottom: 1px solid rgba(0,0,0,0.06);
+      z-index: 99;
+    }
+    .mobile-menu.active { display: block; }
+    .mobile-menu a {
+      display: block; padding: 0.8rem 0; color: var(--dark);
+      text-decoration: none; font-size: 1rem; font-weight: 500;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
     @media (max-width: 768px) {
       .about-content { grid-template-columns: 1fr; }
       .about-visual { height: 200px; }
-      nav ul { display: none; }
+      nav ul { display: none !important; }
+      .hamburger { display: block; }
     }
   </style>
 </head>
@@ -255,8 +285,25 @@
       <span data-lang="en">中文</span>
       <span data-lang="zh">EN</span>
     </button>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div data-lang="en">
+    <a href="#technology" onclick="closeMenu()">Technology</a>
+    <a href="#about" onclick="closeMenu()">About</a>
+    <a href="#contact" onclick="closeMenu()">Contact</a>
+  </div>
+  <div data-lang="zh">
+    <a href="#technology" onclick="closeMenu()">核心技术</a>
+    <a href="#about" onclick="closeMenu()">关于我们</a>
+    <a href="#contact" onclick="closeMenu()">联系我们</a>
+  </div>
+</div>
 
 <!-- ==================== HERO ==================== -->
 <section class="hero">
@@ -373,7 +420,16 @@
 </footer>
 
 <script>
+function toggleMenu() {
+  document.querySelector('.hamburger').classList.toggle('active');
+  document.getElementById('mobileMenu').classList.toggle('active');
+}
+function closeMenu() {
+  document.querySelector('.hamburger').classList.remove('active');
+  document.getElementById('mobileMenu').classList.remove('active');
+}
 function toggleLang() {
+  closeMenu();
   document.body.classList.toggle('zh');
   const isZh = document.body.classList.contains('zh');
   document.documentElement.lang = isZh ? 'zh' : 'en';
